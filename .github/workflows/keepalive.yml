@@ -1,0 +1,20 @@
+name: Keepalive
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # Run once a month
+  workflow_dispatch:
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Commit empty file to keep repo active
+        run: |
+          git config --global user.name "Keepalive Bot"
+          git config --global user.email "bot@noreply.github.com"
+          git commit --allow-empty -m "Keepalive - prevent 60 day inactivity"
+          git push
