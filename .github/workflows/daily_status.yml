@@ -1,0 +1,30 @@
+name: Daily Heartbeat
+
+on:
+  schedule:
+    # Runs at 1:00 UTC (which is roughly 8:00 PM EST)
+    - cron: '0 1 * * *'
+  workflow_dispatch: # Allows you to click a button to test it NOW
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install python-telegram-bot asyncio
+
+      - name: Send Message
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          python -c "import asyncio, os; from telegram import Bot; 
+          async def send():
+              bot = Bot(token=os.environ['TELEGRAM_TOKEN'])
+              await bot.send_message(chat_id=os.environ['CHAT_ID'], text='✅ DAILY CHECK: Bot is active and running for the night session!')
+          asyncio.run(send())"
