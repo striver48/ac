@@ -4,7 +4,7 @@ on:
   schedule:
     # Runs every 5 minutes
     - cron: '*/5 * * * *'
-  workflow_dispatch: # Allows you to force run it manually
+  workflow_dispatch:
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.11'  # <--- THIS IS THE FIX (Was 3.9)
 
       - name: Install dependencies
         run: pip install yfinance pandas python-telegram-bot pytz
